@@ -22,7 +22,7 @@ services:
       - "master:172.28.1.2"
       - "worker1:172.28.1.3"
       - "worker2:172.28.1.4"
-      - "history:172.28.1.5"
+      - "historyserver:172.28.1.5"
 
   master:
     image: ahmad/minilake-master:hadoop331
@@ -55,7 +55,7 @@ services:
       - "metastore:172.28.1.1"
       - "worker1:172.28.1.3"
       - "worker2:172.28.1.4"
-      - "history:172.28.1.5"
+      - "historyserver:172.28.1.5"
 
   worker1:
     image: ahmad/minilake-worker:hadoop331
@@ -83,7 +83,7 @@ services:
       - "metastore:172.28.1.1"
       - "master:172.28.1.2"
       - "worker2:172.28.1.4"
-      - "history:172.28.1.5"
+      - "historyserver:172.28.1.5"
 
   # worker2:
   #   image: ahmad/minilake-worker:hadoop331
@@ -111,12 +111,12 @@ services:
   #     - "metastore:172.28.1.1"
   #     - "master:172.28.1.2"
   #     - "worker1:172.28.1.3"
-  #     - "history:172.28.1.5"
+  #     - "historyserver:172.28.1.5"
 
-  history:
+  historyserver:
     image: ahmad/minilake-history:hadoop331
-    container_name: history-node
-    hostname: history
+    container_name: historyserver
+    hostname: historyserver
     depends_on:
       - master
       - worker1
@@ -124,7 +124,7 @@ services:
     environment:
       SPARK_MASTER_HOST: 172.28.1.2
       SPARK_LOCAL_IP: 172.28.1.5
-      SPARK_LOCAL_HOSTNAME: history
+      SPARK_LOCAL_HOSTNAME: historyserver
       PYSPARK_PYTHON: /opt/conda/bin/python3
       PYSPARK_DRIVER_PYTHON: /opt/conda/bin/python3 
     ports:
@@ -167,7 +167,23 @@ services:
       - "master:172.28.1.2"
       - "worker1:172.28.1.3"
       - "worker2:172.28.1.4"
-      - "history:172.28.1.5"
+      - "historyserver:172.28.1.5"
+  
+  # # HUE (Management node, similar to Ambari)
+  # hue:
+  #   container_name: hue
+  #   image: gethue/hue:4.4.0
+  #   ports:
+  #     - 8000:8888
+  #   env_file:
+  #     - ./hadoop.env
+  #   volumes:
+  #     - ./hue/hue-overrides.ini:/usr/share/hue/desktop/conf/hue-overrides.ini
+  #   depends_on:
+  #     - master
+  #     - historyserver
+  #   networks:
+  #     - minilake-net
 
 volumes:
   namenode:
