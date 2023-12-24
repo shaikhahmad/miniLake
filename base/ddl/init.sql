@@ -1,0 +1,3 @@
+CREATE DATABASE "metastore";
+CREATE USER root WITH ENCRYPTED PASSWORD 'toor';
+GRANT ALL ON DATABASE metastore TO root;
