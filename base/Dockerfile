@@ -1,5 +1,7 @@
-FROM ubuntu:20.04
+FROM jupyter/minimal-notebook:python-3.8
 LABEL MAINTAINER="Muhammad Ahmad <ahmad6346@yahoo.com>"
+
+USER root
 
 RUN DEBIAN_FRONTEND=noninteractive apt update
 RUN apt install openjdk-8-jdk -y

@@ -54,8 +54,14 @@ ENV HIVE_HOME=/opt/hive
 ENV HIVE_CONF_DIR=$HIVE_HOME/conf
 ENV PATH=$HIVE_HOME/sbin:$HIVE_HOME/bin:$PATH
 
-RUN pip install -U pip   &&\
-    pip install --no-cache-dir findspark
+RUN pip install -U pip
+RUN pip install --no-cache-dir findspark
+
+COPY requirments.txt .
+RUN pip install --no-cache-dir -r requirments.txt
+# RUN conda install --file requirments.txt --yes
+
+# RUN conda install -y pytorch torchvision torchaudio cpuonly -c pytorch
 
 COPY run.sh /usr/local/sbin/run.sh
 RUN chmod a+x /usr/local/sbin/run.sh
