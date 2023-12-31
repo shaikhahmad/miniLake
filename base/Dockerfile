@@ -24,10 +24,10 @@ ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 # Hadoop
 ARG HADOOP_VERSION=3.3.4
 ENV HADOOP_HOME=/opt/hadoop
+#  && chown $USERNAME:$GROUPNAME -R $HADOOP_HOME \
 
 RUN set -x \
  && mkdir $HADOOP_HOME  \
-#  && chown $USERNAME:$GROUPNAME -R $HADOOP_HOME \
  && mv hadoop-$HADOOP_VERSION.tar.gz /tmp/hadoop.tar.gz \
  && tar -xf /tmp/hadoop.tar.gz -C $HADOOP_HOME --strip-components 1 \
  && mkdir $HADOOP_HOME/logs \
